@@ -1,0 +1,79 @@
+/* App.css */
+body {
+  background-color: rgba(146, 154, 226, 0.479);
+  background-image: url('../img/2269124.jpg');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+  padding: 0;
+}
+
+.dark-mode {
+  background-color: #121212; /* Color de fondo oscuro */
+  color: white; /* Color del texto en modo oscuro */
+}
+
+.dark-mode .form-control {
+  background-color: #333; /* Fondo para inputs */
+  color: white; /* Texto en inputs */
+}
+
+.dark-mode .btn-secondary {
+  background-color: #555; /* Color de fondo para el botón en modo oscuro */
+  border-color: #777; /* Color del borde para el botón */
+}
+
+.dark-mode .btn-success {
+  background-color: #28a745; /* Color para el botón de éxito */
+}
+
+/* Contenedor del switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-bottom: 20px; /* Añadir margen si es necesario */
+}
+
+/* El checkbox que usaremos como el switch */
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* El slider del switch */
+.switch {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.switch:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Cambiar el fondo cuando el switch está activado */
+input:checked + .switch {
+  background-color: #007bff;
+}
+
+/* Mover el "botón" del switch cuando está activado */
+input:checked + .switch:before {
+  transform: translateX(26px);
+}

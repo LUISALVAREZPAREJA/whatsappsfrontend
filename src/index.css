@@ -1,0 +1,175 @@
+/* Estilos por defecto (modo claro) */
+body {
+  background-color: #f8f9fa; /* Fondo claro */
+  color: #343a40; /* Color de texto oscuro */
+}
+
+/* Estilos para el modo oscuro */
+.dark-mode {
+  background-color: #343a40; /* Fondo oscuro */
+  color: #f8f9fa; /* Color de texto claro */
+}
+/* Cambiar el color del placeholder en modo oscuro */
+.dark-mode ::placeholder {
+  color: #f8f9fa; /* Color blanco para el placeholder */
+  opacity: 1; /* Asegurarse de que no haya transparencia en el texto */
+}
+
+
+/* Estilo para los campos de texto en modo oscuro */
+.dark-mode .form-control {
+  background-color: #495057; /* Fondo oscuro para el campo de texto */
+  color: #000000; /* Color de texto claro */
+  border: 1px solid #6c757d; /* Borde del campo de texto oscuro */
+}
+
+/* Estilo de la alerta en modo oscuro */
+.dark-mode .alert {
+  background-color: #495057; /* Fondo oscuro para la alerta */
+  color: #f8f9fa; /* Color de texto claro */
+}
+
+/* Estilo de los botones en modo oscuro */
+.dark-mode .btn-secondary {
+  background-color: #6c757d; /* Fondo del botón secundario en modo oscuro */
+}
+
+.dark-mode h1, .dark-mode p, .dark-mode label {
+  color: #f5f5f5; /* Cambiar el color de los textos en modo oscuro */
+}
+
+
+.container {
+    margin: 0 auto;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 100;
+}
+
+/* Título principal */
+h1 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Estilo para la etiqueta y el área de texto */
+.form-group label {
+    display: block;
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+/* Área de texto (textarea) */
+textarea.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+/* Estilo al hacer foco en el textarea */
+textarea.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #e7edf7;
+}
+
+/* Estilo al hacer foco en el textarea en modo oscuro */
+.dark-mode textarea.form-control:focus {
+  border-color: #66afe9; /* Color del borde en modo oscuro */
+  outline: none; 
+  background-color: #343a40; /* Color de fondo en modo oscuro */
+  color: #f8f9fa; /* Color del texto en modo oscuro */
+}
+
+/* Margen para el campo y botón */
+.mb-4 {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+/* Margen superior adicional (mt-5) */
+.mt-5 {
+  width: 75%;
+  margin-top: 3rem;
+  margin-left: 12%;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.form-control-file{
+  margin-bottom: 10px;
+}
+
+/* Cambiar el color de los labels en modo oscuro */
+.dark-mode label {
+  color: #e8f4ff; /* Color blanco para los labels */
+}
+/* Contenedor de la barra de progreso */
+/* Aplica una transición suave a la barra de progreso */
+/* Contenedor de la barra de progreso */
+.progress-container {
+  position: relative;
+  width: 50%;
+  height: 30px;
+  background-color: #d2d2d2;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-left: 25%;
+  margin-right: 25%;
+
+}
+
+/* Barra de progreso normal */
+.progress-bar {
+  height: 100%;
+  background-color: blue;
+  transform-origin: center;
+  transform: scaleX(0);
+  transition: transform 0.5s ease-in-out, background-color 0.3s ease-in-out; /* Transición también para el color */
+}
+
+/* Cambiar a verde cuando el progreso está completo */
+.progress-bar.complete {
+  background-color: green;
+}
+
+/* Estilos de la barra en modo oscuro */
+.dark-mode .progress-container {
+  background-color: #343a40; /* Cambiar fondo en modo oscuro */
+}
+
+.dark-mode .progress-bar {
+  background-color: #343a40; /* Cambiar color de la barra en modo oscuro */
+}
+
+.dark-mode .progress-bar.complete {
+  background-color: #0f0; /* Cambiar a un verde más oscuro si está completo */
+}
+
+/* Estilos generales */
+.form-control::placeholder {
+  color: #6c757d; /* Color del placeholder en modo claro */
+}
+
+/* Estilos para el placeholder en modo oscuro */
+.dark-mode .form-control::placeholder {
+  color: #f8f9fa; /* Color blanco para el placeholder */
+  opacity: 1; /* Asegurarse de que no haya transparencia en el texto */
+}
+#numeros{
+  margin-top: 20px;
+}
+
+
