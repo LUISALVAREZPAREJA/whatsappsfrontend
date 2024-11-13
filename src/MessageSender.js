@@ -70,7 +70,7 @@ const MessageSender = () => {
                 formData.append('numbers[]', number); // Usa 'numbers[]' para tratarlo como un array
             
 
-                const response = await fetch(`https://whatsappsbackend-production.up.railway.app/send-message`, {
+                const response = await fetch(`http://whatsappsbackend-production.up.railway.app/send-message`, {
                     method: 'POST',
                     body: formData,
                 });
