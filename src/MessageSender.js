@@ -41,49 +41,57 @@ const MessageSender = () => {
         setIsSending(true);
         setIsCancelled(false);
     
-        const progressIncrement = 100 / numbers.length;
-        let currentProgress = 0;
+        try {
+            const progressIncrement = 100 / numbers.length;
+            let currentProgress = 0;
     
-        for (const number of numbers) {
-            if (isCancelled) {
-                console.log("Envío cancelado");
-                setIsSending(false);
-                return;
-            }
+            for (const number of numbers) {
+                if (isCancelled) {
+                    console.log("Envío cancelado");
+                    setIsSending(false);
+                    return;
+                }
     
-            if (!number) {
-                console.error('Número vacío, saltando...');
-                continue; // Saltar si el número está vacío
-            }
+                if (!number) {
+                    console.error('Número vacío, saltando...');
+                    continue;
+                }
     
-            const formData = new FormData();
-            formData.append('message', message);
-            formData.append('number', number.trim()); // Solo un número por solicitud
+                // Crear un nuevo FormData para cada envío
+                const formData = new FormData();
+                formData.append('message', message);
+                formData.append('number', number.trim()); // Enviar un número por solicitud
     
-            if (selectedFile) {
-                formData.append('file', selectedFile); // Adjuntar archivo si existe
-            }
+                if (selectedFile) {
+                    formData.append('file', selectedFile); // Adjuntar archivo si existe
+                }
     
-            try {
-                const response = await fetch('https://whatsappsbackend-production.up.railway.app/send-message', {
-                    method: 'POST',
-                    body: formData,
-                });
+                // Enviar la solicitud
+                const response = await fetch(
+                    'https://whatsappsbackend-production.up.railway.app/send-message',
+                    {
+                        method: 'POST',
+                        body: formData,
+                    }
+                );
     
                 if (response.ok) {
                     currentProgress += progressIncrement;
                     setProgress(Math.min(currentProgress, 100));
                 } else {
-                    console.error('Error al enviar mensaje a:', number, await response.text());
+                    const errorDetails = await response.json();
+                    console.error(`Error al enviar mensaje a ${number}:`, errorDetails);
                 }
-            } catch (error) {
-                console.error('Error al enviar la solicitud:', error);
             }
-        }
     
-        setIsSending(false);
-        setSuccessMessage('Mensajes enviados correctamente');
+            setSuccessMessage('Mensajes enviados');
+        } catch (error) {
+            console.error('Error al enviar la solicitud:', error);
+        } finally {
+            setIsSending(false);
+        }
     };
+    
     
 
     const handleCancel = () => {
