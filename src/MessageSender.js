@@ -60,20 +60,16 @@ const MessageSender = () => {
                 // Crear un nuevo FormData para cada envío
                 const formData = new FormData();
                 formData.append('message', message);
-                formData.append('number', number.trim()); // Enviar un número por solicitud
-    
+                formData.append('numbers', numbers.join(',')); // Unir números como cadena separada por comas
                 if (selectedFile) {
-                    formData.append('file', selectedFile); // Adjuntar archivo si existe
+                    formData.append('file', selectedFile);
                 }
-    
-                // Enviar la solicitud
-                const response = await fetch(
-                    'https://whatsappsbackend-production.up.railway.app/send-message',
-                    {
-                        method: 'POST',
-                        body: formData,
-                    }
-                );
+                
+                await fetch('https://whatsappsbackend-production.up.railway.app/send-message', {
+                    method: 'POST',
+                    body: formData,
+                });
+                
     
                 if (response.ok) {
                     currentProgress += progressIncrement;
