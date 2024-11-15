@@ -44,20 +44,26 @@ const MessageSender = () => {
             const progressIncrement = 100 / numbers.length;
             let currentProgress = 0;
 
+            const sentNumbers = new Set(); // Para asegurarnos de que no se repita el envío a un número
+
             for (const number of numbers) {
                 if (isCancelled) {
                     console.log("Envío cancelado");
                     setIsSending(false);
                     return;
                 }
-            
+
                 if (!number) {
                     console.error('Número vacío, saltando...');
                     continue; // Saltar si el número está vacío
                 }
-            
+
+                // Evitar enviar el mensaje al mismo número más de una vez
+                if (sentNumbers.has(number)) {
+                    continue;
+                }
+
                 formData.append('numbers[]', number); // Usa 'numbers[]' para tratarlo como un array
-            
 
                 const response = await fetch('https://whatsappsbackend-production.up.railway.app/send-message', {
                     method: 'POST',
@@ -67,6 +73,9 @@ const MessageSender = () => {
                 if (response.ok) {
                     currentProgress += progressIncrement;
                     setProgress(Math.min(currentProgress, 100));
+
+                    // Añadir el número al conjunto de números enviados
+                    sentNumbers.add(number);
                 } else {
                     console.error('Error al enviar mensaje a:', number);
                 }
