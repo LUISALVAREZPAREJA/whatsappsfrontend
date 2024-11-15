@@ -9,86 +9,83 @@ const MessageSender = () => {
     const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
     const [progress, setProgress] = useState(0);
     const [message, setMessage] = useState('');
-    const [numbers, setNumbers] = useState([]); // Cambiado a array
+    const [numbers, setNumbers] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
     const [isSending, setIsSending] = useState(false);
     const [isCancelled, setIsCancelled] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
 
-    // Manejar la selección de archivo CSV
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             Papa.parse(file, {
-                complete: function(results) {
+                complete: function (results) {
                     const numbersArray = results.data.flat();
-                    setNumbers(numbersArray.map(num => num.trim())); // Almacena como array
+                    setNumbers(numbersArray.map(num => num.trim()));
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error("Error al analizar el archivo:", error);
                 }
             });
         }
     };
 
-    // Manejar la selección de imagen o archivo
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         setSelectedFile(file);
     };
 
-    // Enviar mensaje con archivo
     const handleSendMessage = async () => {
         setSuccessMessage('');
         setProgress(0);
         setIsSending(true);
         setIsCancelled(false);
-    
+
         const progressIncrement = 100 / numbers.length;
         let currentProgress = 0;
-    
-        for (const number of numbers) {
-            if (isCancelled) {
-                console.log("Envío cancelado");
-                setIsSending(false);
-                return;
-            }
-    
-            if (!number) {
-                console.error('Número vacío, saltando...');
-                continue; // Saltar si el número está vacío
-            }
-    
-            // Crear un nuevo FormData para cada número
-            const formData = new FormData();
-            formData.append('message', message);
-            formData.append('number', number);
-    
-            if (selectedFile) {
-                formData.append('file', selectedFile);
-            }
-    
-            try {
+
+        try {
+            for (const number of numbers) {
+                if (isCancelled) {
+                    console.log("Envío cancelado");
+                    setIsSending(false);
+                    return;
+                }
+
+                if (!number) {
+                    console.error('Número vacío, saltando...');
+                    continue;
+                }
+
+                const formData = new FormData();
+                formData.append('message', message);
+
+                if (selectedFile) {
+                    formData.append('file', selectedFile);
+                }
+
+                formData.append('number', number);
+
                 const response = await fetch(`https://whatsappsbackend-production.up.railway.app/send-message`, {
                     method: 'POST',
                     body: formData,
                 });
-    
+
                 if (response.ok) {
                     currentProgress += progressIncrement;
                     setProgress(Math.min(currentProgress, 100));
                 } else {
                     console.error('Error al enviar mensaje a:', number);
                 }
-            } catch (error) {
-                console.error('Error al enviar la solicitud:', error);
             }
+
+            setSuccessMessage('Mensajes enviados correctamente');
+        } catch (error) {
+            console.error('Error al enviar los mensajes:', error);
+        } finally {
+            setIsSending(false);
         }
-    
-        setSuccessMessage('Mensajes enviados');
-        setIsSending(false);
     };
-    
 
     const handleCancel = () => {
         setIsCancelled(true);
@@ -146,8 +143,8 @@ const MessageSender = () => {
             <div className="form-group" id="numeros">
                 <label>Números de Teléfono (separados por comas o usando CSV):</label>
                 <textarea
-                    value={numbers.join(', ')} // Mostrar como string para el usuario
-                    onChange={(e) => setNumbers(e.target.value.split(',').map(num => num.trim()))} // Actualizar como array
+                    value={numbers.join(', ')}
+                    onChange={(e) => setNumbers(e.target.value.split(',').map(num => num.trim()))}
                     rows="4"
                     className="form-control"
                     placeholder="Introduce los números separados por comas o usa un archivo CSV..."
