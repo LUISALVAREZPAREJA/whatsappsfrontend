@@ -40,52 +40,51 @@ const MessageSender = () => {
         setProgress(0);
         setIsSending(true);
         setIsCancelled(false);
-
+    
         const progressIncrement = 100 / numbers.length;
         let currentProgress = 0;
-
-        try {
-            for (const number of numbers) {
-                if (isCancelled) {
-                    console.log("Envío cancelado");
-                    setIsSending(false);
-                    return;
-                }
-
-                if (!number) {
-                    console.error('Número vacío, saltando...');
-                    continue;
-                }
-
-                const formData = new FormData();
-                formData.append('message', message);
-
-                if (selectedFile) {
-                    formData.append('file', selectedFile);
-                }
-
-                formData.append('number', number);
-
-                const response = await fetch(`https://whatsappsbackend-production.up.railway.app/send-message`, {
+    
+        for (const number of numbers) {
+            if (isCancelled) {
+                console.log("Envío cancelado");
+                setIsSending(false);
+                return;
+            }
+    
+            if (!number) {
+                console.error('Número vacío, saltando...');
+                continue; // Saltar si el número está vacío
+            }
+    
+            const formData = new FormData();
+            formData.append('message', message);
+            formData.append('number', number.trim()); // Solo un número por solicitud
+    
+            if (selectedFile) {
+                formData.append('file', selectedFile); // Adjuntar archivo si existe
+            }
+    
+            try {
+                const response = await fetch('https://whatsappsbackend-production.up.railway.app/send-message', {
                     method: 'POST',
                     body: formData,
                 });
-
+    
                 if (response.ok) {
                     currentProgress += progressIncrement;
                     setProgress(Math.min(currentProgress, 100));
                 } else {
-                    console.error('Error al enviar mensaje a:', number);
+                    console.error('Error al enviar mensaje a:', number, await response.text());
                 }
+            } catch (error) {
+                console.error('Error al enviar la solicitud:', error);
             }
-
-            setSuccessMessage('Mensajes enviados correctamente');
-        } catch (error) {
-            console.error('Error al enviar los mensajes:', error);
-        } finally {
-            setIsSending(false);
         }
+    
+        setIsSending(false);
+        setSuccessMessage('Mensajes enviados correctamente');
     };
+    
 
     const handleCancel = () => {
         setIsCancelled(true);
