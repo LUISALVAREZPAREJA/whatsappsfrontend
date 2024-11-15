@@ -43,56 +43,52 @@ const MessageSender = () => {
         setProgress(0);
         setIsSending(true);
         setIsCancelled(false);
-
-        const formData = new FormData();
-        formData.append('message', message);
-
-        if (selectedFile) {
-            formData.append('file', selectedFile); // Solo añade si hay archivo
-        }
-
-        try {
-            const progressIncrement = 100 / numbers.length;
-            let currentProgress = 0;
-
-            for (const number of numbers) {
-                if (isCancelled) {
-                    console.log("Envío cancelado");
-                    setIsSending(false);
-                    return;
-                }
-            
-                if (!number) {
-                    console.error('Número vacío, saltando...');
-                    continue; // Saltar si el número está vacío
-                }
-            
-                formData.append('numbers[]', number); // Usa 'numbers[]' para tratarlo como un array
-            
-
+    
+        const progressIncrement = 100 / numbers.length;
+        let currentProgress = 0;
+    
+        for (const number of numbers) {
+            if (isCancelled) {
+                console.log("Envío cancelado");
+                setIsSending(false);
+                return;
+            }
+    
+            if (!number) {
+                console.error('Número vacío, saltando...');
+                continue; // Saltar si el número está vacío
+            }
+    
+            // Crear un nuevo FormData para cada número
+            const formData = new FormData();
+            formData.append('message', message);
+            formData.append('number', number);
+    
+            if (selectedFile) {
+                formData.append('file', selectedFile);
+            }
+    
+            try {
                 const response = await fetch(`https://whatsappsbackend-production.up.railway.app/send-message`, {
                     method: 'POST',
                     body: formData,
                 });
-
+    
                 if (response.ok) {
                     currentProgress += progressIncrement;
                     setProgress(Math.min(currentProgress, 100));
                 } else {
                     console.error('Error al enviar mensaje a:', number);
                 }
-
-                // Limpiar formData para el siguiente número
-                formData.delete('numbers');
+            } catch (error) {
+                console.error('Error al enviar la solicitud:', error);
             }
-
-            setSuccessMessage('Mensajes enviados');
-        } catch (error) {
-            console.error('Error al enviar la solicitud:', error);
-        } finally {
-            setIsSending(false);
         }
+    
+        setSuccessMessage('Mensajes enviados');
+        setIsSending(false);
     };
+    
 
     const handleCancel = () => {
         setIsCancelled(true);
