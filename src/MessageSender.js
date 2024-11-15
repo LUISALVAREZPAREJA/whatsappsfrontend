@@ -67,7 +67,7 @@ const MessageSender = () => {
     
                 // Enviar la solicitud
                 const response = await fetch(
-                    'https://whatsappsbackend-production.up.railway.app/send-message',
+                    'http://whatsappsbackend-production.up.railway.app/send-message',
                     {
                         method: 'POST',
                         body: formData,
