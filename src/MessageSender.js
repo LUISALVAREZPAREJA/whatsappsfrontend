@@ -64,12 +64,15 @@ const MessageSender = () => {
                 if (selectedFile) {
                     formData.append('file', selectedFile);
                 }
-                
-                await fetch('https://whatsappsbackend-production.up.railway.app/send-message', {
-                    method: 'POST',
-                    body: formData,
-                });
-                
+    
+                // Enviar la solicitud
+                const response = await fetch(
+                    'https://whatsappsbackend-production.up.railway.app/send-message',
+                    {
+                        method: 'POST',
+                        body: formData,
+                    }
+                );
     
                 if (response.ok) {
                     currentProgress += progressIncrement;
