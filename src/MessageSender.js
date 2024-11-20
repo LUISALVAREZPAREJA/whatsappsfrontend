@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import Papa from 'papaparse';
 import { ThemeContext } from './themeContex';
+import Papa from 'papaparse'; // Asegúrate de instalarlo: npm install papaparse
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import './App.css';
@@ -9,79 +9,43 @@ const MessageSender = () => {
     const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
     const [progress, setProgress] = useState(0);
     const [message, setMessage] = useState('');
-    const [numbers, setNumbers] = useState([]); // Cambiado a array
+    const [numbers, setNumbers] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [isSending, setIsSending] = useState(false);
     const [isCancelled, setIsCancelled] = useState(false);
 
-    // Manejar la selección de archivo CSV
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            Papa.parse(file, {
-                complete: function(results) {
-                    const numbersArray = results.data.flat();
-                    setNumbers(numbersArray.map(num => num.trim())); // Almacena como array
-                },
-                error: function(error) {
-                    console.error("Error al analizar el archivo:", error);
-                }
-            });
-        }
-    };
-
-    // Enviar mensaje
     const handleSendMessage = async () => {
+        const numberList = numbers.split(',').map(num => num.trim());
         setSuccessMessage('');
         setProgress(0);
         setIsSending(true);
         setIsCancelled(false);
 
-        const formData = new FormData();
-        formData.append('message', message);
-
         try {
-            const progressIncrement = 100 / numbers.length;
+            const progressIncrement = 100 / numberList.length;
             let currentProgress = 0;
 
-            const sentNumbers = new Set(); // Para asegurarnos de que no se repita el envío a un número
-
-            for (const number of numbers) {
+            for (const number of numberList) {
                 if (isCancelled) {
                     console.log("Envío cancelado");
                     setIsSending(false);
                     return;
                 }
 
-                if (!number) {
-                    console.error('Número vacío, saltando...');
-                    continue; // Saltar si el número está vacío
-                }
-
-                // Evitar enviar el mensaje al mismo número más de una vez
-                if (sentNumbers.has(number)) {
-                    continue;
-                }
-
-                formData.append('numbers[]', number); // Usa 'numbers[]' para tratarlo como un array
-
-                const response = await fetch('https://whatsappsbackend-production.up.railway.app/send-message', {
+                const response = await fetch('http://localhost:5000/send-message', {
                     method: 'POST',
-                    body: formData,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message, numbers: [number] }),
                 });
 
                 if (response.ok) {
                     currentProgress += progressIncrement;
                     setProgress(Math.min(currentProgress, 100));
-
-                    // Añadir el número al conjunto de números enviados
-                    sentNumbers.add(number);
                 } else {
                     console.error('Error al enviar mensaje a:', number);
                 }
-
-                // Limpiar formData para el siguiente número
-                formData.delete('numbers');
             }
 
             setSuccessMessage('Mensajes enviados');
@@ -92,15 +56,54 @@ const MessageSender = () => {
         }
     };
 
+    const handleCancelSend = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/cancel-send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message }),
+            });
+
+            if (response.ok) {
+                console.log("Cancelación de envío exitosa");
+            } else {
+                console.error('Error al cancelar el envío');
+            }
+        } catch (error) {
+            console.error('Error al enviar la solicitud de cancelación:', error);
+        }
+    };
+
     const handleCancel = () => {
         setIsCancelled(true);
+        handleCancelSend();
         setIsSending(false);
     };
 
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            Papa.parse(file, {
+                header: false, // Asume que no hay encabezado
+                skipEmptyLines: true,
+                complete: (result) => {
+                    const csvNumbers = result.data.map(row => row[0]).join(',');
+                    setNumbers(prev => (prev ? `${prev},${csvNumbers}` : csvNumbers)); // Agrega los números al estado existente
+                },
+                error: (error) => {
+                    console.error('Error al leer el archivo CSV:', error);
+                },
+            });
+        }
+    };
+
     return (
-        <div className={`mt-5 ${isDarkMode ? 'dark-mode' : ''}`}>
+        <div className={`container mt-5 ${isDarkMode ? 'dark-mode' : ''}`}>
             <h1 className="mb-4">Enviar Mensajes por WhatsApp</h1>
 
+            {/* Barra de progreso */}
             <div className={`progress-container ${isDarkMode ? 'dark-mode' : ''}`}>
                 <div
                     className={`progress-bar ${progress === 100 ? 'complete' : ''}`}
@@ -140,24 +143,25 @@ const MessageSender = () => {
                 />
             </div>
 
-            <div className="form-group" id="numeros">
-                <label>Números de Teléfono (separados por comas o usando CSV):</label>
+            <div className="form-group">
+                <label>Números de Teléfono (separados por comas):</label>
                 <textarea
-                    value={numbers.join(', ')} // Mostrar como string para el usuario
-                    onChange={(e) => setNumbers(e.target.value.split(',').map(num => num.trim()))} // Actualizar como array
+                    value={numbers}
+                    onChange={(e) => setNumbers(e.target.value)}
                     rows="4"
                     className="form-control"
-                    placeholder="Introduce los números separados por comas o usa un archivo CSV..."
+                    placeholder="Introduce los números separados por comas..."
                 />
             </div>
 
-            <div className="drop-area mb-3">
-                <p>Arrastra y suelta un archivo CSV aquí o selecciona los números manualmente.</p>
-            </div>
-
             <div className="form-group">
-                <label>Subir archivo CSV:</label>
-                <input type="file" className="form-control-file" accept=".csv" onChange={handleFileChange} />
+                <label>Cargar CSV:</label>
+                <input
+                    type="file"
+                    className="form-control"
+                    accept=".csv"
+                    onChange={handleFileUpload}
+                />
             </div>
 
             <div className="d-flex">
