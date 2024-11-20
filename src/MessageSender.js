@@ -32,7 +32,7 @@ const MessageSender = () => {
                     return;
                 }
 
-                const response = await fetch('http://localhost:5000/send-message', {
+                const response = await fetch('https://whatsappsbackend-production.up.railway.app/send-message', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const MessageSender = () => {
 
     const handleCancelSend = async () => {
         try {
-            const response = await fetch('https://whatsappsbackend-production.up.railway.app/send-message', {
+            const response = await fetch('https://whatsappsbackend-production.up.railway.app/cancel-send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
