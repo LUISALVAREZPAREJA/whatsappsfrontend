@@ -58,7 +58,7 @@ const MessageSender = () => {
 
     const handleCancelSend = async () => {
         try {
-            const response = await fetch('http://localhost:5000/cancel-send', {
+            const response = await fetch('https://whatsappsbackend-production.up.railway.app/send-message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
