@@ -171,6 +171,13 @@ const MessageSender = () => {
                 <button onClick={handleCancel} className="btn btn-danger mb-4 ml-2" disabled={!isSending}>
                     Cancelar
                 </button>
+                <button
+                onClick={() => window.location.href = 'https://whatsappsbackend.onrender.com/qr'}
+                className="btn btn-primary mb-4"
+                disabled={isSending}
+                >
+                ESCANEAR QR
+                </button>
             </div>
 
             {successMessage && (
