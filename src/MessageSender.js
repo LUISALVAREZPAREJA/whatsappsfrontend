@@ -32,7 +32,7 @@ const MessageSender = () => {
                     return;
                 }
 
-                const response = await fetch('https://whatsappsbackend-production.up.railway.app/send-message', {
+                const response = await fetch('https://whatsappsbackend.onrender.com/send-message', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
