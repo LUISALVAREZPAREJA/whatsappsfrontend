@@ -77,3 +77,72 @@ input:checked + .switch {
 input:checked + .switch:before {
   transform: translateX(26px);
 }
+/* Estilos de la pantalla de login */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f0f4f8; /* Fondo claro */
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.alert {
+  margin-top: 10px;
+  color: red;
+}
+
+.google-login-btn {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Estilo para el botón Google Login */
+.google-login-btn button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4285f4;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.google-login-btn button:hover {
+  background-color: #357ae8;
+}
+
+/* Botón de logout */
+button {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #e60000;
+}
+

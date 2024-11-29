@@ -4,6 +4,7 @@ import Papa from 'papaparse'; // Asegúrate de instalarlo: npm install papaparse
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import './App.css';
+import QRModal from "./qrmodal";
 
 const MessageSender = () => {
     const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -13,6 +14,15 @@ const MessageSender = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [isSending, setIsSending] = useState(false);
     const [isCancelled, setIsCancelled] = useState(false);
+    
+    // Estado para el modal
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Función para abrir el modal
+    const openModal = () => setIsModalOpen(true);
+
+    // Función para cerrar el modal
+    const closeModal = () => setIsModalOpen(false);
 
     const handleSendMessage = async () => {
         const numberList = numbers.split(',').map(num => num.trim());
@@ -171,13 +181,13 @@ const MessageSender = () => {
                 <button onClick={handleCancel} className="btn btn-danger mb-4 ml-2" disabled={!isSending}>
                     Cancelar
                 </button>
-                <button
-                onClick={() => window.location.href = 'https://whatsappsbackend.onrender.com/qr'}
-                className="btn btn-primary mb-4"
-                disabled={isSending}
-                >
-                ESCANEAR QR
-                </button>
+
+                <button onClick={openModal} className="btn btn-info mb-4 ml-2">
+                    Ver QR
+                </button> {/* Botón para abrir el modal */}
+
+                {/* Modal QR */}
+                <QRModal isOpen={isModalOpen} onRequestClose={closeModal} />
             </div>
 
             {successMessage && (
