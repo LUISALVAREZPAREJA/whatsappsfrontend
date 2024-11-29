@@ -1,6 +1,6 @@
-// QRModal.js
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
+import './index.css'; // Asegúrate de incluir los estilos
 
 Modal.setAppElement("#root");
 
@@ -24,13 +24,18 @@ const QRModal = ({ isOpen, onRequestClose }) => {
     };
 
     fetchQrImage();
-  }, []); // Este efecto solo se ejecuta una vez cuando el componente se monta
+  }, []);
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
-      <h2>QR Code</h2>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      overlayClassName="modal-overlay"
+      className="modal-content"
+    >
+      <h2>Código QR</h2>
       {qrImage ? (
-        <img src={qrImage} alt="QR Code" style={{ width: "300px", height: "300px" }} />
+        <img src={qrImage} alt="Código QR" />
       ) : (
         <p>Cargando QR...</p>
       )}
