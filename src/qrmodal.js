@@ -24,6 +24,11 @@ const QRModal = ({ isOpen, onRequestClose }) => {
     };
 
     fetchQrImage();
+
+    const interval = setInterval(() => {
+      fetchQrImage();
+    }, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   return (

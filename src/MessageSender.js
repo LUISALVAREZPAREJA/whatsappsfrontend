@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import './App.css';
 import QRModal from "./qrmodal";
+import Logs from "./showlogs";
 
 const MessageSender = () => {
     const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -195,6 +196,11 @@ const MessageSender = () => {
                     {successMessage}
                 </div>
             )}
+
+            <div className="logs-container mt-4">
+                <h3>Estado del Bot:</h3>
+                <Logs /> {/* Aquí se muestra el componente Logs */}
+            </div>
         </div>
     );
 };

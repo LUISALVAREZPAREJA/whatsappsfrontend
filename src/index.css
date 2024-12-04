@@ -241,4 +241,62 @@ textarea.form-control:focus {
   }
 }
 
+.logs-container {
+  border: 1px solid #ccc;
+  padding: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+}
 
+.logs-container h2 {
+  margin-top: 0;
+}
+
+.logs-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.logs-container li {
+  margin-bottom: 8px;
+  font-family: monospace;
+}
+
+
+.alert.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.alert.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+
+.dark-mode .logs-container{
+  background-color: #333; /* Fondo oscuro */
+  color: #fff; /* Texto blanco */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Sombra más marcada */
+}
+
+/* Estilos para el modo oscuro */
+.dark-mode .alert {
+  background-color: #444; /* Fondo oscuro para las alertas */
+  color: #f0f0f0; /* Texto claro */
+  border: 1px solid #555; /* Borde más oscuro */
+}
+
+/* Estilos específicos para las alertas de éxito */
+.dark-mode .alert-success {
+  background-color: #216d33; /* Fondo verde más oscuro */
+  color: #fff; /* Texto blanco */
+}
+
+/* Estilos específicos para las alertas de error */
+.dark-mode .alert-danger {
+  background-color: #63161d; /* Fondo rojo más oscuro */
+  color: #fff; /* Texto blanco */
+}
